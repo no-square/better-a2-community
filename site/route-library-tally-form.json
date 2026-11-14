@@ -1,0 +1,70 @@
+{
+  "title": "Submit a Better A2 Route",
+  "description": "Share a route with the Better A2 community. Attach a route package exported from Better A2 and provide enough detail for the library maintainer to review it.",
+  "submit_button": "Submit route",
+  "success_message": "Thanks for sharing your route. The library maintainer will review the package before publication.",
+  "fields": [
+    {
+      "type": "short_text",
+      "name": "route_name",
+      "label": "Route name",
+      "description": "Use a short, recognizable name for the route.",
+      "required": true,
+      "placeholder": "e.g. Ruby EAH"
+    },
+    {
+      "type": "dropdown",
+      "name": "world",
+      "label": "World",
+      "required": true,
+      "options": [
+        "Verteron",
+        "Altgard",
+        "Chaotic Lower Reshanta"
+      ]
+    },
+    {
+      "type": "dropdown",
+      "name": "faction",
+      "label": "Faction",
+      "required": true,
+      "options": [
+        "Elyos",
+        "Asmodian",
+        "Shared"
+      ]
+    },
+    {
+      "type": "short_text",
+      "name": "resources",
+      "label": "Resources",
+      "description": "List the main resources gathered on this route.",
+      "required": false,
+      "placeholder": "Comma-separated resource names"
+    },
+    {
+      "type": "short_text",
+      "name": "author_credit",
+      "label": "Author credit",
+      "description": "Name or community nickname to display with the route.",
+      "required": false
+    },
+    {
+      "type": "file_upload",
+      "name": "route_package",
+      "label": "Better A2 route package (JSON)",
+      "description": "Upload the JSON package exported from Better A2. JSON only; maximum file size: 10 MB.",
+      "required": true,
+      "accepted_file_types": [".json"],
+      "max_file_size_mb": 10
+    },
+    {
+      "type": "long_text",
+      "name": "notes",
+      "label": "Notes for players",
+      "description": "Add useful route details such as direction, hazards, or recommended setup.",
+      "required": false,
+      "placeholder": "Optional route notes"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+# Local editor and operating-system files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Local previews / temporary files
+*.log
+*.tmp
+*.bak
+
+# Never commit personal application data, captures, or binaries
+runtime/data/
+*.pcap
+*.pcapng
+*.exe
+*.dll
+*.zip
