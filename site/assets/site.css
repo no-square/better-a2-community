@@ -78,7 +78,8 @@ a:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid 
 .filters select:focus, .search-box input:focus { border-color: var(--cyan); }
 .search-box { display: flex; align-items: center; gap: 10px; padding-left: 12px; border: 1px solid #26313d; border-radius: 6px; background: #141b24; color: var(--cyan); }
 .search-box input { border: 0; background: transparent; padding-left: 0; outline: none; }
-.results-line { display: flex; justify-content: space-between; margin: 18px 3px 10px; color: #aab9c5; font-size: 10px; letter-spacing: 1px; }
+.results-line { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 18px 3px 10px; color: #aab9c5; font-size: 10px; letter-spacing: 1px; }
+.results-actions { display: flex; align-items: center; gap: 14px; }
 .route-list, .announcement-list { display: grid; gap: 10px; }
 .route-card, .announcement-card, .project-card { border: 1px solid #dcecf02b; border-radius: 9px; background: #101821d9; backdrop-filter: blur(13px); }
 .route-card { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px; }
@@ -124,6 +125,8 @@ body.route-map-open { overflow: hidden; }
 .inline-note p:not(.eyebrow), .release-banner p:not(.eyebrow) { max-width: 600px; margin: 0; color: #aab9c5; font-size: 12px; }
 .inline-note .eyebrow, .release-banner .eyebrow { margin-bottom: 6px; }
 .route-submit-panel { margin-top: 38px; padding: 24px; border: 1px solid #dcecf02b; border-radius: 9px; background: #101821d9; backdrop-filter: blur(13px); }
+.route-submit-steps { margin-top: 30px; }
+.submission-back-link { margin-top: 20px; }
 .route-submit-intro { max-width: 720px; margin-bottom: 22px; }
 .route-submit-intro .eyebrow { margin-bottom: 7px; }
 .route-submit-intro h2 { margin: 0 0 8px; font-size: 24px; font-weight: 500; }
@@ -179,6 +182,8 @@ body.route-map-open { overflow: hidden; }
   .announcement-card { min-height: 175px; }
   .route-card { align-items: flex-start; flex-direction: column; }
   .route-card-actions { flex-wrap: wrap; }
+  .results-line { align-items: flex-start; }
+  .results-actions { align-items: flex-end; flex-direction: column-reverse; gap: 8px; }
   .route-map-viewer { padding: 0; }
   .route-map-dialog { width: 100%; height: 100%; border: 0; border-radius: 0; }
   .route-map-header { align-items: flex-start; padding: 12px; }
