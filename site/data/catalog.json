@@ -1,4 +1,15 @@
 {
   "schema": 1,
-  "routes": []
+  "routes": [
+    {
+      "name": "Alchemis_0001",
+      "world": "World_L_A",
+      "faction": "Elyos",
+      "resources": "Aria, Mela, Orichalcum, Kukuru, Targena, Yggdrasil",
+      "author": "nosquare",
+      "description": "",
+      "status": "verified",
+      "package": "data/routes/World_L_A/Elyos/alchemis-0001.json"
+    }
+  ]
 }
