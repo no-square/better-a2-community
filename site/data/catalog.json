@@ -12,6 +12,17 @@
       "status": "verified",
       "added_at": "2026-11-15T00:13:59Z",
       "package": "data/routes/World_L_A/Elyos/alchemis-0001.json"
+    },
+    {
+      "name": "Alchemis_0002",
+      "platform": "Better A2",
+      "world": "World_L_A",
+      "faction": "Elyos",
+      "resources": "Aria, Mela, Orichalcum, Targena, Kukuru",
+      "author": "nosquare",
+      "description": "",
+      "status": "verified",
+      "package": "data/routes/World_L_A/Elyos/alchemis-0002.json"
     }
   ]
 }
