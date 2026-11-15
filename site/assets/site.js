@@ -12,6 +12,7 @@ async function loadRouteCatalog() {
     const routes = Array.isArray(data.routes) ? data.routes : [];
     const worlds = [...new Set(routes.map(r => r.world).filter(Boolean))].sort();
     const factions = [...new Set(routes.map(r => r.faction).filter(Boolean))].sort();
+    const nameCollator = new Intl.Collator('en', { sensitivity: 'base', numeric: true });
     worlds.forEach(value => $('world-filter')?.add(new Option(worldNames[value] || value, value)));
     factions.forEach(value => $('faction-filter')?.add(new Option(factionNames[value] || value, value)));
     const render = () => {
@@ -19,11 +20,22 @@ async function loadRouteCatalog() {
       const world = $('world-filter')?.value || '';
       const faction = $('faction-filter')?.value || '';
       const platform = $('platform-filter')?.value || '';
-      const filtered = routes.filter(r => [r.name,r.world,r.faction,r.platform || 'Better A2',r.resources,r.description].join(' ').toLowerCase().includes(query) && (!world || r.world === world) && (!faction || r.faction === faction) && (!platform || (r.platform || 'Better A2') === platform));
+      const filtered = routes.map((route, index) => ({ route, index })).filter(({route:r}) => [r.name,r.world,r.faction,r.platform || 'Better A2',r.resources,r.description].join(' ').toLowerCase().includes(query) && (!world || r.world === world) && (!faction || r.faction === faction) && (!platform || (r.platform || 'Better A2') === platform));
+      const sort = $('route-sort')?.value || 'newest';
+      filtered.sort((a, b) => {
+        if (sort === 'name-asc' || sort === 'name-desc') {
+          const order = nameCollator.compare(a.route.name || '', b.route.name || '');
+          return (sort === 'name-desc' ? -order : order) || a.index - b.index;
+        }
+        const aDate = Date.parse(a.route.added_at || '') || 0;
+        const bDate = Date.parse(b.route.added_at || '') || 0;
+        const order = aDate - bDate;
+        return (sort === 'oldest' ? order : -order) || a.index - b.index;
+      });
       $('result-count').textContent = `${filtered.length} ${filtered.length === 1 ? 'route' : 'routes'}`;
-      list.innerHTML = filtered.length ? filtered.map(route => { const routePlatform = route.platform || 'Better A2'; const fileType = routePlatform === 'ESP' ? '.a2routes' : 'JSON'; return `<article class="route-card"><div class="route-card-main"><div class="route-tags"><span class="pill">${safe(worldNames[route.world] || route.world)}</span><span class="pill pill-muted">${safe(factionNames[route.faction] || route.faction)}</span><span class="pill pill-muted">${safe(routePlatform)}</span>${route.status === 'verified' ? '<span class="pill pill-verified">VERIFIED</span>' : ''}</div><h2>${safe(route.name)}</h2><p>${safe(route.description || 'Community route package.')}</p><div class="route-meta"><span>RESOURCES <b>${safe(route.resources || 'Not specified')}</b></span><span>BY <b>${safe(route.author || 'Community')}</b></span></div></div><div class="route-card-actions"><button class="button button-primary" type="button" data-route-map="${safe(route.package)}" data-world="${safe(route.world)}" data-name="${safe(route.name)}" data-faction="${safe(route.faction)}" data-platform="${safe(routePlatform)}">View map</button><a class="button button-small" href="${safe(route.package)}" download>Download ${fileType} ↓</a></div></article>`; }).join('') : `<div class="empty-state"><span>⌖</span><h2>${routes.length ? 'No matching routes' : 'The library is getting ready'}</h2><p>${routes.length ? 'Try another search or filter.' : 'No route packages have been published yet. Check back as the community library grows.'}</p><a href="contribute.html">How route sharing will work →</a></div>`;
+      list.innerHTML = filtered.length ? filtered.map(({route}) => { const routePlatform = route.platform || 'Better A2'; const fileType = routePlatform === 'ESP' ? '.a2routes' : 'JSON'; return `<article class="route-card"><div class="route-card-main"><div class="route-tags"><span class="pill">${safe(worldNames[route.world] || route.world)}</span><span class="pill pill-muted">${safe(factionNames[route.faction] || route.faction)}</span><span class="pill pill-muted">${safe(routePlatform)}</span>${route.status === 'verified' ? '<span class="pill pill-verified">VERIFIED</span>' : ''}</div><h2>${safe(route.name)}</h2><p>${safe(route.description || 'Community route package.')}</p><div class="route-meta"><span>RESOURCES <b>${safe(route.resources || 'Not specified')}</b></span><span>BY <b>${safe(route.author || 'Community')}</b></span></div></div><div class="route-card-actions"><button class="button button-primary" type="button" data-route-map="${safe(route.package)}" data-world="${safe(route.world)}" data-name="${safe(route.name)}" data-faction="${safe(route.faction)}" data-platform="${safe(routePlatform)}">View map</button><a class="button button-small" href="${safe(route.package)}" download>Download ${fileType} ↓</a></div></article>`; }).join('') : `<div class="empty-state"><span>⌖</span><h2>${routes.length ? 'No matching routes' : 'The library is getting ready'}</h2><p>${routes.length ? 'Try another search or filter.' : 'No route packages have been published yet. Check back as the community library grows.'}</p><a href="contribute.html">How route sharing will work →</a></div>`;
     };
-    ['route-search','world-filter','faction-filter','platform-filter'].forEach(id => $(id)?.addEventListener(id === 'route-search' ? 'input' : 'change', render));
+    ['route-search','world-filter','faction-filter','platform-filter','route-sort'].forEach(id => $(id)?.addEventListener(id === 'route-search' ? 'input' : 'change', render));
     render();
   } catch {
     $('result-count').textContent = 'Route catalog unavailable';
