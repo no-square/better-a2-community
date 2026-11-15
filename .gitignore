@@ -17,3 +17,6 @@ runtime/data/
 *.exe
 *.dll
 *.zip
+
+# Generated route copies for local site preview
+/site/data/routes/
