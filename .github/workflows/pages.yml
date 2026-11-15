@@ -6,8 +6,11 @@ on:
     paths:
       - 'site/**'
       - 'routes/**'
+      - 'tools/build_announcements.py'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
+  schedule:
+    - cron: '17 0,12 * * *'
 
 permissions:
   contents: read
@@ -28,6 +31,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7.0.1
+      - name: Set up Python
+        uses: actions/setup-python@v6.0.0
+        with:
+          python-version: '3.x'
+      - name: Build announcement feed
+        run: python tools/build_announcements.py
       - name: Prepare site bundle
         shell: bash
         run: |
