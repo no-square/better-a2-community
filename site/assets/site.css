@@ -181,6 +181,22 @@ body.route-map-open { overflow: hidden; }
 .about-shot-overlay-bar img { max-height: 100px; object-fit: contain; }
 .about-shot-overlay-pets img, .about-shot-overlay-dps img { max-height: 560px; }
 .about-shot-overlay-menu img { max-height: 260px; }
+.about-summary-grid { margin-top: -34px; margin-bottom: 72px; }
+.about-detail-list { display: flex; flex-direction: column; gap: 14px; }
+.about-feature-row { display: flex; height: 276px; min-height: 276px; overflow: hidden; border: 1px solid #dcecf02b; border-radius: 9px; background: #101821d9; }
+.about-feature-row .about-shot { flex: 0 0 33.333%; width: 33.333%; height: 100%; margin: 0; padding: 12px; border: 0; }
+.about-feature-row .about-feature-copy { display: flex; flex: 1; min-width: 0; flex-direction: column; justify-content: center; padding: 28px clamp(22px, 4vw, 58px); }
+.about-feature-row:nth-child(even) .about-shot { order: 1; }
+.about-feature-row:nth-child(even) .about-feature-copy { order: 0; }
+.about-feature-row .about-shot img { width: 100%; height: 100%; max-height: none; object-fit: contain; }
+.about-feature-row .about-shot-image { position: relative; display: block; width: 100%; max-width: 100%; container-type: inline-size; }
+.about-shot-image-character { aspect-ratio: 2022 / 968; }
+.about-shot-image-activities { aspect-ratio: 2022 / 1132; }
+.about-shot-image-history { aspect-ratio: 2040 / 630; }
+.about-shot-image-menu { aspect-ratio: 867 / 247; }
+.about-feature-row .about-shot-image-dps { width: auto; height: 100%; max-width: 100%; aspect-ratio: 517 / 612; }
+.about-feature-row .about-shot-image img { width: 100%; height: 100%; object-fit: fill; }
+.about-feature-row .about-shot-overlay-bar img { height: auto; max-height: 100%; }
 .redaction { position: absolute; z-index: 1; display: flex; align-items: center; justify-content: flex-start; overflow: hidden; white-space: nowrap; color: #e5ecf3; font-weight: 600; line-height: 1; pointer-events: none; }
 .redaction-character-name { left: 5.15%; top: 29.3%; width: 15%; height: 5.7%; padding-left: .2%; background: #0c1016; font-size: 2.05cqw; }
 .redaction-character-tab { left: 3.25%; top: 41.7%; width: 5.6%; height: 3.8%; padding-left: .1%; background: #1a4052; font-size: .82cqw; }
@@ -226,7 +242,13 @@ body.route-map-open { overflow: hidden; }
   .inline-note, .release-banner { align-items: flex-start; flex-direction: column; }
   .about-intro { margin-bottom: 42px; }
   .about-section { margin-top: 52px; }
-  .about-feature-grid, .about-overlay-grid { grid-template-columns: 1fr; }
+  .about-summary-grid { margin-top: -20px; margin-bottom: 52px; }
+  .about-feature-row { height: auto; min-height: 0; flex-direction: column; }
+  .about-feature-row .about-shot { flex: 0 0 auto; width: 100%; height: 230px; }
+  .about-feature-row .about-feature-copy { order: 1 !important; min-height: 150px; padding: 22px; }
+  .about-feature-row:nth-child(even) .about-shot { order: 0; }
+  .about-feature-row .about-shot-image-dps { height: 100%; width: auto; }
+  .about-feature-row .about-shot img { max-height: 100%; }
   .about-feature-card-wide { grid-column: auto; }
   .about-shot img { max-height: 62vh; }
   .redaction-character-name { font-size: 2.05cqw; }
