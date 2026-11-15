@@ -24,6 +24,18 @@
       "status": "verified",
       "added_at": "2026-11-15T16:23:55Z",
       "package": "data/routes/World_L_A/Elyos/alchemis-0002.json"
+    },
+    {
+      "name": "Yggdrasil_0001",
+      "platform": "Better A2",
+      "world": "World_L_A",
+      "faction": "Elyos",
+      "resources": "Yggdrasil, Coriolus, Diamond",
+      "author": "nosquare",
+      "description": "",
+      "status": "verified",
+      "added_at": "2026-11-15T17:41:54Z",
+      "package": "data/routes/World_L_A/Elyos/yggdrasil-0001.json"
     }
   ]
 }
