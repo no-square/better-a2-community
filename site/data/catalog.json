@@ -3,6 +3,7 @@
   "routes": [
     {
       "name": "Alchemis_0001",
+      "platform": "Better A2",
       "world": "World_L_A",
       "faction": "Elyos",
       "resources": "Aria, Mela, Orichalcum, Kukuru, Targena, Yggdrasil",

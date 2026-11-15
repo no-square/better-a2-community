@@ -1,6 +1,6 @@
 {
-  "title": "Submit a Better A2 Route",
-  "description": "Share a route with the Better A2 community. Attach a route package exported from Better A2 and provide enough detail for the library maintainer to review it.",
+  "title": "Submit a Community Route",
+  "description": "Share a route with the community. Attach a route package exported from Better A2 or ESP and provide enough detail for the library maintainer to review it.",
   "submit_button": "Submit route",
   "success_message": "Thanks for sharing your route. The library maintainer will review the package before publication.",
   "fields": [
@@ -52,10 +52,10 @@
     {
       "type": "file_upload",
       "name": "route_package",
-      "label": "Better A2 route package (JSON)",
-      "description": "Upload the JSON package exported from Better A2. JSON only; maximum file size: 10 MB.",
+      "label": "Route package (Better A2 JSON or ESP .a2routes)",
+      "description": "Upload a route package exported from Better A2 (.json) or ESP (.a2routes). Maximum file size: 10 MB.",
       "required": true,
-      "accepted_file_types": [".json"],
+      "accepted_file_types": [".json", ".a2routes"],
       "max_file_size_mb": 10
     },
     {

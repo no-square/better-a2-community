@@ -18,11 +18,12 @@ async function loadRouteCatalog() {
       const query = ($('route-search')?.value || '').trim().toLowerCase();
       const world = $('world-filter')?.value || '';
       const faction = $('faction-filter')?.value || '';
-      const filtered = routes.filter(r => [r.name,r.world,r.faction,r.resources,r.description].join(' ').toLowerCase().includes(query) && (!world || r.world === world) && (!faction || r.faction === faction));
+      const platform = $('platform-filter')?.value || '';
+      const filtered = routes.filter(r => [r.name,r.world,r.faction,r.platform || 'Better A2',r.resources,r.description].join(' ').toLowerCase().includes(query) && (!world || r.world === world) && (!faction || r.faction === faction) && (!platform || (r.platform || 'Better A2') === platform));
       $('result-count').textContent = `${filtered.length} ${filtered.length === 1 ? 'route' : 'routes'}`;
-      list.innerHTML = filtered.length ? filtered.map(route => `<article class="route-card"><div class="route-card-main"><div class="route-tags"><span class="pill">${safe(worldNames[route.world] || route.world)}</span><span class="pill pill-muted">${safe(factionNames[route.faction] || route.faction)}</span>${route.status === 'verified' ? '<span class="pill pill-verified">VERIFIED</span>' : ''}</div><h2>${safe(route.name)}</h2><p>${safe(route.description || 'Community route package.')}</p><div class="route-meta"><span>RESOURCES <b>${safe(route.resources || 'Not specified')}</b></span><span>BY <b>${safe(route.author || 'Community')}</b></span></div></div><div class="route-card-actions"><button class="button button-primary" type="button" data-route-map="${safe(route.package)}" data-world="${safe(route.world)}" data-name="${safe(route.name)}" data-faction="${safe(route.faction)}">View map</button><a class="button button-small" href="${safe(route.package)}" download>Download JSON ↓</a></div></article>`).join('') : `<div class="empty-state"><span>⌖</span><h2>${routes.length ? 'No matching routes' : 'The library is getting ready'}</h2><p>${routes.length ? 'Try another search or filter.' : 'No route packages have been published yet. Check back as the community library grows.'}</p><a href="contribute.html">How route sharing will work →</a></div>`;
+      list.innerHTML = filtered.length ? filtered.map(route => { const routePlatform = route.platform || 'Better A2'; const fileType = routePlatform === 'ESP' ? '.a2routes' : 'JSON'; return `<article class="route-card"><div class="route-card-main"><div class="route-tags"><span class="pill">${safe(worldNames[route.world] || route.world)}</span><span class="pill pill-muted">${safe(factionNames[route.faction] || route.faction)}</span><span class="pill pill-muted">${safe(routePlatform)}</span>${route.status === 'verified' ? '<span class="pill pill-verified">VERIFIED</span>' : ''}</div><h2>${safe(route.name)}</h2><p>${safe(route.description || 'Community route package.')}</p><div class="route-meta"><span>RESOURCES <b>${safe(route.resources || 'Not specified')}</b></span><span>BY <b>${safe(route.author || 'Community')}</b></span></div></div><div class="route-card-actions"><button class="button button-primary" type="button" data-route-map="${safe(route.package)}" data-world="${safe(route.world)}" data-name="${safe(route.name)}" data-faction="${safe(route.faction)}" data-platform="${safe(routePlatform)}">View map</button><a class="button button-small" href="${safe(route.package)}" download>Download ${fileType} ↓</a></div></article>`; }).join('') : `<div class="empty-state"><span>⌖</span><h2>${routes.length ? 'No matching routes' : 'The library is getting ready'}</h2><p>${routes.length ? 'Try another search or filter.' : 'No route packages have been published yet. Check back as the community library grows.'}</p><a href="contribute.html">How route sharing will work →</a></div>`;
     };
-    ['route-search','world-filter','faction-filter'].forEach(id => $(id)?.addEventListener(id === 'route-search' ? 'input' : 'change', render));
+    ['route-search','world-filter','faction-filter','platform-filter'].forEach(id => $(id)?.addEventListener(id === 'route-search' ? 'input' : 'change', render));
     render();
   } catch {
     $('result-count').textContent = 'Route catalog unavailable';
@@ -124,8 +125,13 @@ async function openRouteMap(button) {
       }),
     ]);
     if (!packageResponse.ok) throw new Error(`Route package request failed (${packageResponse.status}).`);
-    const data = await packageResponse.json();
-    const route = Array.isArray(data.routes) ? data.routes[0] : null;
+    let route;
+    if ((button.dataset.platform || '').toLowerCase() === 'esp' || button.dataset.routeMap.toLowerCase().endsWith('.a2routes')) {
+      route = parseEspRouteText(await packageResponse.text());
+    } else {
+      const data = await packageResponse.json();
+      route = Array.isArray(data.routes) ? data.routes[0] : null;
+    }
     if (!route || !Array.isArray(route.points) || !route.points.length) throw new Error('This route package has no viewable route points.');
     routeMap.image = image;
     routeMap.points = route.points;
@@ -135,6 +141,36 @@ async function openRouteMap(button) {
     routeMap.image = null;
     mapStatus.textContent = error.message || 'Could not load route preview.';
   }
+}
+
+function splitEspFields(line) {
+  const tokens = line.match(/"(?:\\.|[^"\\])*"|\S+/g) || [];
+  return tokens.map(token => token.startsWith('"') ? JSON.parse(token) : token);
+}
+
+function parseEspRouteText(text) {
+  const lines = text.split(/\r?\n/).filter(line => line.trim());
+  const header = lines[0]?.trim().split(/\s+/) || [];
+  if (header[0] !== 'AION_ROUTES' || header.length !== 3) throw new Error('Unrecognized ESP route package.');
+  const schema = Number(header[1]);
+  const routeCount = Number(header[2]);
+  if (!Number.isInteger(schema) || schema < 1 || schema > 6 || routeCount !== 1) throw new Error('ESP map preview expects one route in schema 1–6.');
+  const routeFields = splitEspFields(lines[1] || '');
+  const pointCount = Number(routeFields[3]);
+  if (routeFields.length < 4 || !Number.isInteger(pointCount) || pointCount < 1 || pointCount > 512 || lines.length !== pointCount + 2) throw new Error('ESP route header or point count is invalid.');
+  const points = [];
+  for (let i = 0; i < pointCount; i++) {
+    const fields = splitEspFields(lines[i + 2]);
+    if (fields.length < 6) throw new Error(`ESP route point ${i + 1} is incomplete.`);
+    let cursor = 6;
+    let waypoint = false;
+    if (schema >= 2) waypoint = Number(fields[cursor++]) === 1;
+    if (schema >= 3) cursor += 2;
+    const point = { x: Number(fields[3]), y: Number(fields[4]), z: Number(fields[5]), waypoint };
+    if (cursor !== fields.length || ![point.x, point.y, point.z].every(Number.isFinite)) throw new Error(`ESP route point ${i + 1} is invalid.`);
+    points.push(point);
+  }
+  return { points };
 }
 
 function closeRouteMap() {
