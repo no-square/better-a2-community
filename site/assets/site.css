@@ -159,6 +159,36 @@ body.route-map-open { overflow: hidden; }
 .muted-note { display: block; margin-top: 18px; color: var(--gold); font-size: 10px; line-height: 1.6; }
 .release-banner { margin-top: 26px; }
 .release-banner .eyebrow { margin: 0 0 7px; }
+.about-intro { max-width: 900px; margin-bottom: 58px; }
+.about-intro h1 { max-width: 850px; }
+.about-intro .button { margin-top: 10px; }
+.about-section { margin-top: 72px; }
+.about-section-heading { max-width: 760px; margin-bottom: 22px; }
+.about-section-heading .eyebrow { margin-bottom: 10px; }
+.about-section-heading h2 { margin: 0 0 9px; font-size: clamp(25px, 3.5vw, 38px); font-weight: 500; letter-spacing: -1px; }
+.about-section-heading>p:last-child:not(.eyebrow) { margin: 0; color: #aab9c5; font-size: 13px; line-height: 1.7; }
+.about-feature-grid, .about-overlay-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; align-items: start; }
+.about-feature-card { min-width: 0; overflow: hidden; border: 1px solid #dcecf02b; border-radius: 9px; background: #101821d9; backdrop-filter: blur(13px); }
+.about-feature-card-wide { grid-column: 1 / -1; }
+.about-shot { position: relative; display: flex; justify-content: center; align-items: center; width: 100%; margin: 0; overflow: hidden; background: #0b1016; container-type: inline-size; }
+.about-shot img { display: block; width: 100%; height: auto; max-height: min(68vh, 620px); object-fit: contain; }
+.about-feature-copy { padding: 17px 19px 20px; }
+.about-feature-copy .project-number { display: block; margin-bottom: 9px; }
+.about-feature-copy h3 { margin: 0 0 7px; font-size: 18px; font-weight: 600; }
+.about-feature-copy p { max-width: 690px; margin: 0; color: #aab9c5; font-size: 12px; line-height: 1.7; }
+.about-overlay-section { padding-top: 12px; }
+.about-shot-overlay-bar { margin: 20px 0 14px; border: 1px solid #dcecf02b; border-radius: 9px; }
+.about-shot-overlay-bar img { max-height: 100px; object-fit: contain; }
+.about-shot-overlay-pets img, .about-shot-overlay-dps img { max-height: 560px; }
+.about-shot-overlay-menu img { max-height: 260px; }
+.redaction { position: absolute; z-index: 1; display: flex; align-items: center; justify-content: flex-start; overflow: hidden; white-space: nowrap; color: #e5ecf3; font-weight: 600; line-height: 1; pointer-events: none; }
+.redaction-character-name { left: 5.15%; top: 29.3%; width: 15%; height: 5.7%; padding-left: .2%; background: #0c1016; font-size: 2.05cqw; }
+.redaction-character-tab { left: 3.25%; top: 41.7%; width: 5.6%; height: 3.8%; padding-left: .1%; background: #1a4052; font-size: .82cqw; }
+.redaction-activities-tab { left: 1.55%; top: 27.2%; width: 7.1%; height: 4.3%; padding-left: .2%; background: #1a4052; font-size: .88cqw; }
+.redaction-activities-meta { left: 1.9%; top: 38.3%; width: 13.6%; height: 2.4%; background: #141b24; font-size: .85cqw; }
+.redaction-history-tab { left: 2.55%; top: 57.6%; width: 5.7%; height: 5.5%; padding-left: .1%; background: #1a4052; font-size: .84cqw; }
+.redaction-dps-name { left: 10.3%; top: 20.4%; width: 22%; height: 3.2%; background: #292b2d; font-size: 3.4cqw; text-transform: none; }
+.redaction-menu-name { left: 7.2%; top: 4%; width: 12.5%; height: 12%; background: #1b2027; font-size: 1.8cqw; text-transform: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 @media (max-width: 760px) {
   .site-header { height: 64px; padding: 0 17px; gap: 13px; }
@@ -194,6 +224,12 @@ body.route-map-open { overflow: hidden; }
   .route-submit-form { grid-template-columns: 1fr; }
   .form-field-wide, .form-submit-row { grid-column: auto; }
   .inline-note, .release-banner { align-items: flex-start; flex-direction: column; }
+  .about-intro { margin-bottom: 42px; }
+  .about-section { margin-top: 52px; }
+  .about-feature-grid, .about-overlay-grid { grid-template-columns: 1fr; }
+  .about-feature-card-wide { grid-column: auto; }
+  .about-shot img { max-height: 62vh; }
+  .redaction-character-name { font-size: 2.05cqw; }
   .site-footer { padding-left: 20px; padding-right: 20px; }
 }
 @media (max-width: 430px) {
