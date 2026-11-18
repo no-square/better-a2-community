@@ -6,6 +6,8 @@ from __future__ import annotations
 import json
 import re
 import sys
+import os
+import tempfile
 from collections import defaultdict
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -44,13 +46,18 @@ def parse_date(value: str | None) -> datetime | None:
 
 
 def fetch_releases(repository: str) -> list[dict]:
-    url = f"https://api.github.com/repos/{repository}/releases?per_page=100"
-    request = Request(url, headers={"Accept": "application/vnd.github+json", "User-Agent": USER_AGENT})
-    with urlopen(request, timeout=25) as response:
-        payload = json.load(response)
-    if not isinstance(payload, list):
-        raise ValueError(f"Unexpected release response from {repository}")
-    return payload
+    releases = []
+    for page in range(1, 51):
+        url = f"https://api.github.com/repos/{repository}/releases?per_page=100&page={page}"
+        request = Request(url, headers={"Accept": "application/vnd.github+json", "User-Agent": USER_AGENT})
+        with urlopen(request, timeout=25) as response:
+            payload = json.load(response)
+        if not isinstance(payload, list):
+            raise ValueError(f"Unexpected release response from {repository}")
+        releases.extend(payload)
+        if len(payload) < 100:
+            return releases
+    raise ValueError(f"Release pagination limit reached for {repository}; retaining existing history")
 
 
 def release_channel(release: dict) -> str:
@@ -119,12 +126,9 @@ def build_route_items(config: dict) -> list[dict]:
             group["latest"] = added
 
     route_since = parse_date(config.get("routes_since"))
-    today = datetime.now(timezone.utc).date()
     items = []
     for added_day in sorted(grouped, reverse=True):
         if route_since and datetime.combine(added_day, datetime.min.time(), timezone.utc) < route_since:
-            continue
-        if (today - added_day).days > 30:
             continue
         counts = grouped[added_day]["counts"]
         total = sum(counts.values())
@@ -145,12 +149,54 @@ def build_route_items(config: dict) -> list[dict]:
     return items
 
 
+def item_key(item: dict) -> tuple:
+    if item.get("kind") == "release":
+        return ("release", str(item.get("url") or "").rstrip("/"))
+    if item.get("kind") == "routes":
+        return ("routes", item.get("date"))
+    return (item.get("kind"), item.get("date"), item.get("title"), item.get("url"))
+
+
+def merge_items(previous: list[dict], current: list[dict]) -> list[dict]:
+    # A fetch result updates existing cards; absence never deletes a published card.
+    merged = {item_key(item): item for item in previous}
+    for item in current:
+        key = item_key(item)
+        merged[key] = {**merged.get(key, {}), **item}
+    return sorted(merged.values(), key=lambda item: (item.get("published_at", ""), item.get("kind", "")), reverse=True)
+
+
+def read_history(path: Path) -> dict:
+    if not path.exists():
+        return {"schema": 1, "items": []}
+    # Never treat damaged history as an empty feed and overwrite it.
+    feed = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(feed, dict) or not isinstance(feed.get("items"), list) or any(not isinstance(item, dict) for item in feed["items"]):
+        raise ValueError("Invalid announcements history; refusing to replace it")
+    return feed
+
+
+def write_feed(path: Path, previous: dict, items: list[dict]) -> None:
+    generated = previous.get("generated_at") if previous.get("items") == items else None
+    feed = {"schema": 1, "generated_at": generated or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"), "items": items}
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent, delete=False) as output:
+            temporary = output.name
+            output.write(json.dumps(feed, ensure_ascii=False, indent=2) + "\n")
+        os.replace(temporary, path)
+        temporary = None
+    finally:
+        if temporary:
+            os.unlink(temporary)
+
+
 def main() -> int:
     config = read_json(CONFIG_PATH, {})
-    items = build_release_items(config) + build_route_items(config)
-    items.sort(key=lambda item: (item["published_at"], item["kind"]), reverse=True)
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(json.dumps({"schema": 1, "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"), "items": items}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    previous = read_history(OUTPUT_PATH)
+    items = merge_items(previous["items"], build_release_items(config) + build_route_items(config))
+    write_feed(OUTPUT_PATH, previous, items)
     print(f"Built announcements feed with {len(items)} item(s).")
     return 0
 

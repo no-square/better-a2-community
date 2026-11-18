@@ -1,15 +1,48 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-15T17:54:51.372560Z",
+  "generated_at": "2026-11-18T14:29:22.645468Z",
   "items": [
+    {
+      "kind": "release",
+      "date": "2026-11-18",
+      "published_at": "2026-11-18T14:21:27Z",
+      "product": "Better ESP",
+      "tag": "STABLE",
+      "version": "v3.1",
+      "title": "Better ESP v3.1",
+      "body": "3.1 — Global Steam — 2026-11-18\r\n\r\n- Extract the complete archive. Run build\\aion_external_v3.1.exe with the same\r\n- elevation as the game. Keep aion_offsets.a2params, assets and languages beside it.\r\n- English is the default; choose another language in CONFIG.\r\n- The optional input backend requires its driver; the existing installer is included.",
+      "url": "https://github.com/no-square/a2eg/releases/tag/v3.1"
+    },
+    {
+      "kind": "release",
+      "date": "2026-11-17",
+      "published_at": "2026-11-17T13:10:51Z",
+      "product": "Better A2",
+      "tag": "BETA",
+      "version": "v0.0.4-beta.1",
+      "title": "Better A2 v0.0.4-beta.1",
+      "body": "- Keep the launcher and updater as the two files in the package root.\r\n- Share images across both map views.\r\n- Give F9 counterattack time to confirm the selected attacker and retry after two seconds when the Tab sweep ends.\r\n- Keep live F9 resources eligible when the approximate obstacle grid cannot find a path; use direct approach and the existing no-progress recovery.",
+      "url": "https://github.com/no-square/bettera2/releases/tag/v0.0.4-beta.1"
+    },
+    {
+      "kind": "release",
+      "date": "2026-11-16",
+      "published_at": "2026-11-16T03:21:32Z",
+      "product": "Better A2",
+      "tag": "BETA",
+      "version": "v0.0.3-beta.8",
+      "title": "Better A2 v0.0.3-beta.8",
+      "body": "- Add CUR with 1,316 known points and 12 linked points\r\n- Add Drop Materials to the map and drop data\r\n- Update selected materials. An empty selection admits all verified points inside the active area\r\n- Enable CUR for route and F9\r\n- Improve ground obstacle navigation\r\n- Improve navigation recovery checks using actual character movement\r\n- Add navigation-grid diagnostics to the existing gather input log\r\n- Fix F9 Od model matching\r\n- Airborne behavior is unchanged",
+      "url": "https://github.com/no-square/bettera2/releases/tag/v0.0.3-beta.8"
+    },
     {
       "kind": "routes",
       "date": "2026-11-15",
-      "published_at": "2026-11-15T16:23:55Z",
+      "published_at": "2026-11-15T17:41:54Z",
       "product": "COMMUNITY ROUTES",
       "tag": "ROUTE",
-      "title": "2 new community routes",
-      "body": "Better A2: 2",
+      "title": "3 new community routes",
+      "body": "Better A2: 3",
       "url": "routes.html"
     }
   ]
