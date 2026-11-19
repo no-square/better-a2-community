@@ -1,7 +1,29 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-18T14:29:22.645468Z",
+  "generated_at": "2026-11-19T07:36:16.606576Z",
   "items": [
+    {
+      "kind": "release",
+      "date": "2026-11-19",
+      "published_at": "2026-11-19T00:35:52Z",
+      "product": "Better A2",
+      "tag": "BETA",
+      "version": "a2param-beta-2026.11.19.1",
+      "title": "Better A2 a2param-beta-2026.11.19.1",
+      "body": "Better A2 a2param-beta-2026.11.19.1 is available. Open the release page for details and downloads.",
+      "url": "https://github.com/no-square/bettera2/releases/tag/a2param-beta-2026.11.19.1"
+    },
+    {
+      "kind": "release",
+      "date": "2026-11-18",
+      "published_at": "2026-11-18T23:49:47Z",
+      "product": "Better A2",
+      "tag": "BETA",
+      "version": "v0.0.4-beta.2",
+      "title": "Better A2 v0.0.4-beta.2",
+      "body": "- Fix startup ordering: select a readable process without old offsets, resolve the profile before telemetry probes, and load the applied core globals in the telemetry reader.\r\n- Return a controlled JSON error for missing PID and fix table placeholders.\r\n- Give F9 counterattack time to confirm the selected attacker and retry after two seconds when the Tab sweep ends.\r\n- Keep live F9 resources eligible when the approximate obstacle grid cannot find a path; use direct approach and the existing no-progress recovery.",
+      "url": "https://github.com/no-square/bettera2/releases/tag/v0.0.4-beta.2"
+    },
     {
       "kind": "release",
       "date": "2026-11-18",
