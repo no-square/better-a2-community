@@ -1,7 +1,18 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-19T07:36:16.606576Z",
+  "generated_at": "2026-11-21T07:21:44.535488Z",
   "items": [
+    {
+      "kind": "release",
+      "date": "2026-11-21",
+      "published_at": "2026-11-21T03:08:15Z",
+      "product": "Better A2",
+      "tag": "BETA",
+      "version": "v0.0.4-beta.3",
+      "title": "Better A2 v0.0.4-beta.3",
+      "body": "- Stage RMB then LMB, confirm both buttons before combat camera movement, and bound recovery attempts when delivery is not confirmed.\r\n- Document the Windows touchpad typing-suppression setting that can block virtual LMB after keyboard input, and the connection check needed to clear a previous input failure.\r\n- Automatically fit the overlay bar to visible controls; retain manual width and edge resizing.\r\n- Alt+E keeps the circle when inside it, or centers it on the player with the configured radius; wait at least 3 seconds and release the hotkey before starts.\r\n- Improve ground obstacle recovery and shallow-water approach handling; retain bounded retries and real movement checks.\r\n- Synchronize target selection with 100 ms active HUD/binding reads, fresh post-Tab samples, exact target validation and input readiness checks.\r\n- Speed up large camera turns while retaining adaptive fine aiming.\r\n- Add the Enemies category and colour for confirmed opposite-side players.\r\n- Include offset update comparison and startup verification fixes.",
+      "url": "https://github.com/no-square/bettera2/releases/tag/v0.0.4-beta.3"
+    },
     {
       "kind": "release",
       "date": "2026-11-19",
